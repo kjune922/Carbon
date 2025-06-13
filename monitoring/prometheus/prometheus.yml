@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'kubernetes-metrics'
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - 'localhost:8080'  # 이후 실제 metrics-server 혹은 custom endpoint로 교체
+
+  - job_name: 'carbon-monitor'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['host.docker.internal:8000']  # 예: Pushgateway 혹은 custom exporter
+
+  - job_name: 'migration-events'
+    static_configs:
+      - targets: ['host.docker.internal:8001']
